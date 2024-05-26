@@ -116,6 +116,13 @@ body {
 }
 
 /* 모달 스타일 추가 */
+.modal-content .modal-image {
+  width: 120px; /* 크기를 설정 */
+  height: auto; /* 비율을 유지 */
+  margin-bottom: 20px; /* 이미지와 텍스트 사이의 간격 */
+}
+
+/* 기존 모달 스타일 */
 .modal {
   display: none;
   position: fixed;
@@ -123,19 +130,20 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 85%;
-  max-width: 315px;
+  width: 360px; /* 여기서 너비를 410px로 줄였습니다 */
   background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(20px); /* .wrapper의 backdrop-filter와 일치 */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* .wrapper의 box-shadow와 일치 */
+  border: 2px solid rgba(255, 255, 255, 0.2); /* .wrapper의 border와 일치 */
+  border-radius: 10px; /* .wrapper의 border-radius와 일치 */
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: transparent; /* .wrapper의 배경과 일치 */
   margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 100%;
+  padding: 30px 40px; /* .wrapper의 padding과 일치 */
+  color: #fff; /* .wrapper의 텍스트 색상과 일치 */
   text-align: center;
-  border-radius: 10px;
 }
 
 .modal-content p {
