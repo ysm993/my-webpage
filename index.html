@@ -56,37 +56,50 @@
       </div>
     </div>
 
-    <script>
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-analytics.js";
+      import {
+        getAuth,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-auth.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyDsY5JhCbU8M4n0fEgW9XP6XgtdNNgWRXU",
+        authDomain: "easy-login-1bae4.firebaseapp.com",
+        projectId: "easy-login-1bae4",
+        storageBucket: "easy-login-1bae4.appspot.com",
+        messagingSenderId: "81972332279",
+        appId: "1:81972332279:web:7245142fbe7039fd1ab5f2",
+        measurementId: "G-L2KSZ32ZGN",
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+
       document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (event) {
+        .getElementById("signinButton")
+        .addEventListener("click", (event) => {
           event.preventDefault();
           const email = document.getElementById("signinEmail").value;
           const password = document.getElementById("signinPassword").value;
-
-          // 로그인 로직을 여기에 추가하세요
-          // 예제: 사용자가 성공적으로 로그인했는지 확인하는 조건문
-          const loginSuccess = false; // 실제 로그인 성공 여부를 확인하는 로직을 추가해야 합니다
-
-          if (!loginSuccess) {
-            const modal = document.getElementById("loginModal");
-            modal.style.display = "block";
-          }
+          const auth = getAuth();
+          signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+              window.location.href = "indexmain.html"; // 로그인 성공 시 indexmain.html로 이동
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              // 에러 모달 창을 띄웁니다.
+              document.getElementById("loginModal").style.display = "block";
+            });
         });
 
-      function closeModal() {
-        const modal = document.getElementById("loginModal");
-        modal.style.display = "none";
-      }
-
-      document.getElementById("okButton").onclick = closeModal;
-
-      window.onclick = function (event) {
-        const modal = document.getElementById("loginModal");
-        if (event.target == modal) {
-          closeModal();
-        }
-      };
+      document.getElementById("okButton").addEventListener("click", () => {
+        document.getElementById("loginModal").style.display = "none";
+      });
     </script>
   </body>
 </html>

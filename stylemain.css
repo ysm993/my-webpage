@@ -1,0 +1,136 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("backgound.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.background-container {
+  background: rgba(255, 255, 255, 0.9); /* 흰 배경과 약간의 투명도 */
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.add-article-button {
+  position: absolute;
+  top: 58px;
+  right: 38px;
+  background-color: #ff6347;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.articles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.article-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+
+.article-card img {
+  width: 100%;
+  height: auto;
+}
+
+.article-card h2 {
+  font-size: 1.2em;
+  margin: 15px;
+}
+
+.article-card p {
+  font-size: 0.9em;
+  margin: 0 15px 15px;
+  color: #555;
+}
+
+.article-card:hover {
+  transform: translateY(-5px);
+}
+
+/* 모달 스타일 추가 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+.modal-content .input-box {
+  margin-bottom: 15px;
+}
+
+.modal-content .input-box label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.modal-content .input-box input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content .btn {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.modal-content .btn:hover {
+  background-color: #555;
+}

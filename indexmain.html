@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sheep Sleep House</title>
+    <link rel="stylesheet" href="stylemain.css" />
+  </head>
+  <body>
+    <div class="background-container">
+      <div class="container">
+        <h1>Sheep Sleep</h1>
+        <button id="addArticleButton" class="add-article-button">+</button>
+        <div class="articles" id="articlesContainer">
+          <div class="article-card">
+            <img
+              src="image1.jpg"
+              alt="International Artist Feature: Malaysia"
+            />
+            <h2>International Artist Feature: Malaysia</h2>
+            <p>Mary Winkler</p>
+          </div>
+          <div class="article-card">
+            <img
+              src="image2.jpg"
+              alt="How to Conduct Remote Usability Testing"
+            />
+            <h2>How to Conduct Remote Usability Testing</h2>
+            <p>Harry Brignull</p>
+          </div>
+          <div class="article-card">
+            <img src="image3.jpg" alt="Created by You, July Edition" />
+            <h2>Created by You, July Edition</h2>
+            <p>Melody Nieves</p>
+          </div>
+          <div class="article-card">
+            <img
+              src="image4.jpg"
+              alt="How to Code a Scrolling 'Alien Lander' Website"
+            />
+            <h2>How to Code a Scrolling 'Alien Lander' Website</h2>
+            <p>Kezz Bracey</p>
+          </div>
+          <div class="article-card">
+            <img
+              src="image5.jpg"
+              alt="How to Create a 'Stranger Things' Text Effect in Adobe Photoshop"
+            />
+            <h2>
+              How to Create a 'Stranger Things' Text Effect in Adobe Photoshop
+            </h2>
+            <p>Rose</p>
+          </div>
+          <div class="article-card">
+            <img
+              src="image6.jpg"
+              alt="5 Inspirational Business Portraits and How to Make Your Own"
+            />
+            <h2>5 Inspirational Business Portraits and How to Make Your Own</h2>
+            <p>Marie Gardiner</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="addArticleModal" class="modal">
+      <div class="modal-content">
+        <h2>Add New Article</h2>
+        <form id="addArticleForm">
+          <div class="input-box">
+            <label for="articleImage">Image URL:</label>
+            <input
+              type="text"
+              id="articleImage"
+              placeholder="Enter image URL"
+            />
+          </div>
+          <div class="input-box">
+            <label for="articleTitle">Title:</label>
+            <input type="text" id="articleTitle" placeholder="Enter title" />
+          </div>
+          <div class="input-box">
+            <label for="articleAuthor">Author:</label>
+            <input type="text" id="articleAuthor" placeholder="Enter author" />
+          </div>
+          <button type="button" class="btn" id="submitArticleButton">
+            Add Article
+          </button>
+        </form>
+        <button class="btn" id="closeArticleModal">Close</button>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("addArticleButton")
+        .addEventListener("click", function () {
+          document.getElementById("addArticleModal").style.display = "block";
+        });
+
+      document
+        .getElementById("closeArticleModal")
+        .addEventListener("click", function () {
+          document.getElementById("addArticleModal").style.display = "none";
+        });
+
+      document
+        .getElementById("submitArticleButton")
+        .addEventListener("click", function () {
+          const imageUrl = document.getElementById("articleImage").value;
+          const title = document.getElementById("articleTitle").value;
+          const author = document.getElementById("articleAuthor").value;
+
+          const articleContainer = document.getElementById("articlesContainer");
+
+          const newArticle = document.createElement("div");
+          newArticle.classList.add("article-card");
+          newArticle.innerHTML = `
+                <img src="${imageUrl}" alt="${title}">
+                <h2>${title}</h2>
+                <p>${author}</p>
+            `;
+
+          articleContainer.appendChild(newArticle);
+          document.getElementById("addArticleModal").style.display = "none";
+          document.getElementById("addArticleForm").reset();
+        });
+    </script>
+  </body>
+</html>
