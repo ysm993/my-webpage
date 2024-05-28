@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -10,7 +11,6 @@
       rel="stylesheet"
     />
   </head>
-
   <body>
     <div class="background-container">
       <div class="container">
@@ -27,7 +27,15 @@
           alt="Article Image"
           class="article-image"
         />
-        <p id="articleAuthor" class="author-text">Author</p>
+        <div class="author-info">
+          <img
+            id="authorImage"
+            src=""
+            alt="Author Profile Image"
+            class="author-image"
+          />
+          <p id="articleAuthor" class="author-text">Author</p>
+        </div>
         <p id="articleContent" class="content-text">Content</p>
       </div>
     </div>
@@ -43,9 +51,16 @@
           document.getElementById("articleTitle").innerText = article.title;
           document.getElementById(
             "articleAuthor"
-          ).innerText = `By: ${article.author}`;
+          ).innerText = `${article.author}`;
           document.getElementById("articleContent").innerText = article.content;
           document.getElementById("articleImage").src = article.image;
+
+          // 작성자의 프로필 이미지를 로드합니다.
+          if (article.authorImage) {
+            document.getElementById("authorImage").src = article.authorImage;
+          } else {
+            document.getElementById("authorImage").src = "original.jpg"; // 기본 이미지 설정
+          }
         } else {
           document.getElementById("articleTitle").innerText =
             "Article Not Found";

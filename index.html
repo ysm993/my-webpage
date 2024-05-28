@@ -90,7 +90,16 @@
           signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
               const user = userCredential.user;
-              localStorage.setItem("currentUser", JSON.stringify(user));
+              const storedUser =
+                JSON.parse(localStorage.getItem("currentUser")) || {};
+              if (storedUser.email === user.email) {
+                localStorage.setItem("currentUser", JSON.stringify(storedUser));
+              } else {
+                storedUser.email = user.email;
+                storedUser.profileImage = "original.jpg"; // 기본 이미지 설정
+                storedUser.nickname = ""; // 초기 닉네임 설정
+                localStorage.setItem("currentUser", JSON.stringify(storedUser));
+              }
               window.location.href = "indexmain.html"; // 로그인 성공 시 indexmain.html로 이동
             })
             .catch((error) => {

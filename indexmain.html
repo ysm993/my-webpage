@@ -137,12 +137,14 @@
             const content = document.getElementById("articleContent").value;
             const user = JSON.parse(localStorage.getItem("currentUser"));
             const author = user ? user.nickname : "Anonymous";
+            const authorImage = user ? user.profileImage : "original.jpg";
 
             const articles = JSON.parse(localStorage.getItem("articles")) || [];
             const newArticle = {
               image: imageUrl,
               title: title,
               author: author,
+              authorImage: authorImage,
               content: content,
             };
             articles.unshift(newArticle); // 최신 글을 맨 앞에 추가
@@ -171,14 +173,15 @@
       document
         .getElementById("logoutButton")
         .addEventListener("click", function () {
-          localStorage.removeItem("currentUser");
           window.location.href = "index.html"; // 로그인 페이지로 이동
         });
 
       window.onload = function () {
         const user = JSON.parse(localStorage.getItem("currentUser"));
-        if (user) {
+        if (user && user.profileImage) {
           document.getElementById("profileImage").src = user.profileImage;
+        } else {
+          document.getElementById("profileImage").src = "original.jpg";
         }
         loadArticles();
       };

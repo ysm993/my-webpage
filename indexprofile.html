@@ -40,7 +40,7 @@
         if (user) {
           document.getElementById("profileImagePreview").src =
             user.profileImage || "original.jpg";
-          document.getElementById("nickname").value = user.nickname || "ORI";
+          document.getElementById("nickname").value = user.nickname || "";
           document
             .getElementById("nickname")
             .classList.add("middle-placeholder");
@@ -97,6 +97,16 @@
 
       function saveUserProfile(user, nickname) {
         user.nickname = nickname;
+        let users = JSON.parse(localStorage.getItem("users")) || [];
+        const existingUserIndex = users.findIndex(
+          (u) => u.email === user.email
+        );
+        if (existingUserIndex !== -1) {
+          users[existingUserIndex] = user;
+        } else {
+          users.push(user);
+        }
+        localStorage.setItem("users", JSON.stringify(users));
         localStorage.setItem("currentUser", JSON.stringify(user));
         alert("Profile updated successfully!");
         window.location.href = "indexmain.html";
