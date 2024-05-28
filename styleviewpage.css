@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url("backgound.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+.background-container {
+  background: rgba(255, 255, 255, 0.6); /* 흰 배경과 약간의 투명도 */
+  padding: 40px;
+  border-radius: 10px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5em;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  background: none;
+  border: none;
+  color: #da4f36;
+  font-size: 1.7em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-button i {
+  margin-right: 5px;
+}
+
+.article-image {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+
+.author-text {
+  font-size: 0.9em;
+  color: #da4f36;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.content-text {
+  font-size: 1.1em;
+  margin-top: 20px;
+  background-color: aliceblue;
+  text-align: left;
+  padding: 5%;
+  border-radius: 15px;
+}
+
+/* 로그아웃 버튼 스타일 */
+.logout-button {
+  background: none;
+  border: none;
+  color: #da4f36;
+  font-size: 1.7em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 37px;
+  right: 38px;
+}
+
+.logout-button i {
+  margin-right: 5px;
+}

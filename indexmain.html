@@ -6,93 +6,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sheep Sleep House</title>
     <link rel="stylesheet" href="stylemain.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <div class="background-container">
       <div class="container">
         <h1>Sheep Sleep</h1>
-        <button id="addArticleButton" class="add-article-button">+</button>
-        <div class="articles" id="articlesContainer">
-          <div class="article-card">
-            <img
-              src="image1.jpg"
-              alt="International Artist Feature: Malaysia"
-            />
-            <h2>International Artist Feature: Malaysia</h2>
-            <p>Mary Winkler</p>
-          </div>
-          <div class="article-card">
-            <img
-              src="image2.jpg"
-              alt="How to Conduct Remote Usability Testing"
-            />
-            <h2>How to Conduct Remote Usability Testing</h2>
-            <p>Harry Brignull</p>
-          </div>
-          <div class="article-card">
-            <img src="image3.jpg" alt="Created by You, July Edition" />
-            <h2>Created by You, July Edition</h2>
-            <p>Melody Nieves</p>
-          </div>
-          <div class="article-card">
-            <img
-              src="image4.jpg"
-              alt="How to Code a Scrolling 'Alien Lander' Website"
-            />
-            <h2>How to Code a Scrolling 'Alien Lander' Website</h2>
-            <p>Kezz Bracey</p>
-          </div>
-          <div class="article-card">
-            <img
-              src="image5.jpg"
-              alt="How to Create a 'Stranger Things' Text Effect in Adobe Photoshop"
-            />
-            <h2>
-              How to Create a 'Stranger Things' Text Effect in Adobe Photoshop
-            </h2>
-            <p>Rose</p>
-          </div>
-          <div class="article-card">
-            <img
-              src="image6.jpg"
-              alt="5 Inspirational Business Portraits and How to Make Your Own"
-            />
-            <h2>5 Inspirational Business Portraits and How to Make Your Own</h2>
-            <p>Marie Gardiner</p>
-          </div>
+        <div class="user-profile">
+          <img
+            id="profileImage"
+            src=""
+            alt="Profile Image"
+            class="profile-circle"
+          />
         </div>
+        <button id="logoutButton" class="logout-button">
+          <i class="bx bx-door-open"></i>
+        </button>
+        <div class="articles" id="articlesContainer">
+          <!-- 저장된 글이 여기에 추가됩니다 -->
+        </div>
+        <button id="addArticleButton" class="add-article-button">+</button>
       </div>
     </div>
 
     <div id="addArticleModal" class="modal">
       <div class="modal-content">
-        <h2>Add New Article</h2>
-        <form id="addArticleForm">
+        <div class="modal-header">
+          <span>Chat</span>
+          <button class="close-btn" id="closeArticleModal">&times;</button>
+        </div>
+        <div class="modal-body">
           <div class="input-box">
-            <label for="articleImage">Image URL:</label>
+            <label for="articleTitle">Title:</label>
             <input
               type="text"
-              id="articleImage"
-              placeholder="Enter image URL"
+              id="articleTitle"
+              placeholder="Enter title"
+              maxlength="36"
             />
           </div>
           <div class="input-box">
-            <label for="articleTitle">Title:</label>
-            <input type="text" id="articleTitle" placeholder="Enter title" />
+            <textarea
+              id="articleContent"
+              placeholder="Write your content here..."
+              rows="10"
+            ></textarea>
           </div>
-          <div class="input-box">
-            <label for="articleAuthor">Author:</label>
-            <input type="text" id="articleAuthor" placeholder="Enter author" />
-          </div>
-          <button type="button" class="btn" id="submitArticleButton">
-            Add Article
-          </button>
-        </form>
-        <button class="btn" id="closeArticleModal">Close</button>
+        </div>
+        <div class="modal-footer">
+          <label for="articleImage" class="upload-label">
+            <input
+              type="file"
+              id="articleImage"
+              accept="image/*"
+              style="display: none"
+            />
+            <i class="bx bx-image"></i>
+          </label>
+          <button class="btn" id="submitArticleButton">Send</button>
+        </div>
       </div>
     </div>
 
     <script>
+      function loadArticles() {
+        const articlesContainer = document.getElementById("articlesContainer");
+        articlesContainer.innerHTML = "";
+        const articles = JSON.parse(localStorage.getItem("articles")) || [];
+        articles.forEach((article, index) => {
+          const articleElement = document.createElement("div");
+          articleElement.classList.add("article-card");
+
+          const truncatedTitle =
+            article.title.length > 36
+              ? article.title.slice(0, 36) + "..."
+              : article.title;
+
+          articleElement.innerHTML = `
+            <img src="${article.image}" alt="${article.title}">
+            <h2>${truncatedTitle}</h2>
+            <button class="delete-btn" onclick="deleteArticle(${index}, event)">
+              <i class="bx bxs-trash"></i>
+            </button>
+          `;
+
+          articleElement.addEventListener("click", (e) => {
+            if (!e.target.closest(".delete-btn")) {
+              window.location.href = `indexviewpage.html?index=${index}`;
+            }
+          });
+          articlesContainer.appendChild(articleElement); // 최신 글이 앞에 오도록 prepend 사용
+        });
+      }
+
+      function deleteArticle(index, event) {
+        event.stopPropagation(); // 이벤트 전파를 막아 글 클릭 시 페이지 이동이 되지 않도록 함
+        const articles = JSON.parse(localStorage.getItem("articles")) || [];
+        articles.splice(index, 1);
+        localStorage.setItem("articles", JSON.stringify(articles));
+        loadArticles();
+      }
+
       document
         .getElementById("addArticleButton")
         .addEventListener("click", function () {
@@ -103,29 +121,67 @@
         .getElementById("closeArticleModal")
         .addEventListener("click", function () {
           document.getElementById("addArticleModal").style.display = "none";
+          document.getElementById("articleTitle").value = "";
+          document.getElementById("articleContent").value = "";
+          document.getElementById("articleImage").value = "";
         });
 
       document
         .getElementById("submitArticleButton")
         .addEventListener("click", function () {
-          const imageUrl = document.getElementById("articleImage").value;
-          const title = document.getElementById("articleTitle").value;
-          const author = document.getElementById("articleAuthor").value;
+          const fileInput = document.getElementById("articleImage");
+          const reader = new FileReader();
+          reader.onload = function (event) {
+            const imageUrl = event.target.result;
+            const title = document.getElementById("articleTitle").value;
+            const content = document.getElementById("articleContent").value;
+            const user = JSON.parse(localStorage.getItem("currentUser"));
+            const author = user ? user.nickname : "Anonymous";
 
-          const articleContainer = document.getElementById("articlesContainer");
+            const articles = JSON.parse(localStorage.getItem("articles")) || [];
+            const newArticle = {
+              image: imageUrl,
+              title: title,
+              author: author,
+              content: content,
+            };
+            articles.unshift(newArticle); // 최신 글을 맨 앞에 추가
+            localStorage.setItem("articles", JSON.stringify(articles));
 
-          const newArticle = document.createElement("div");
-          newArticle.classList.add("article-card");
-          newArticle.innerHTML = `
-                <img src="${imageUrl}" alt="${title}">
-                <h2>${title}</h2>
-                <p>${author}</p>
-            `;
+            loadArticles();
+            document.getElementById("addArticleModal").style.display = "none";
+            document.getElementById("articleTitle").value = "";
+            document.getElementById("articleContent").value = "";
+            document.getElementById("articleImage").value = "";
+          };
 
-          articleContainer.appendChild(newArticle);
-          document.getElementById("addArticleModal").style.display = "none";
-          document.getElementById("addArticleForm").reset();
+          if (fileInput.files.length > 0) {
+            reader.readAsDataURL(fileInput.files[0]);
+          } else {
+            alert("Please select an image file.");
+          }
         });
+
+      document
+        .getElementById("profileImage")
+        .addEventListener("click", function () {
+          window.location.href = "indexprofile.html"; // 프로필 설정 페이지로 이동
+        });
+
+      document
+        .getElementById("logoutButton")
+        .addEventListener("click", function () {
+          localStorage.removeItem("currentUser");
+          window.location.href = "index.html"; // 로그인 페이지로 이동
+        });
+
+      window.onload = function () {
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        if (user) {
+          document.getElementById("profileImage").src = user.profileImage;
+        }
+        loadArticles();
+      };
     </script>
   </body>
 </html>

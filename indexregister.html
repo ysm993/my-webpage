@@ -1,57 +1,68 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Register Form in HTML and CSS | Condehal</title>
-  <link rel="stylesheet" href="styleregister.css" />
-  <link
-    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-    rel="stylesheet"/>
-</head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Form in HTML and CSS | Condehal</title>
+    <link rel="stylesheet" href="styleregister.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
 
-<body>
-  <div class="wrapper">
-    <form id="registerForm" action="">
-      <h1>Register</h1>
-      <div class="input-box">
-        <input
-          type="email"
-          id="signupEmail"
-          placeholder="Email"
-          required="true"
-        />
-        <i class="bx bxs-envelope"></i>
-      </div>
-      <div class="input-box">
-        <input
-          type="password"
-          id="signupPassword"
-          placeholder="Password"
-          required="true"
-        />
-        <i class="bx bxs-lock-alt"></i>
-      </div>
-      <button type="submit" class="btn" id="signupButton">Start</button>
-      <div class="login-link">
-        <p>Already have an account? <a href="index.html">Login</a></p>
-      </div>
-    </form>
-
-    <div id="registerModal" class="modal">
-      <div class="modal-content">
-        <img src="error.gif" alt="Error Icon" class="modal-image" />
-        <p id="modalMessage">에러</p>
-        <button class="btn" id="closeModalButton">OK</button>
+  <body>
+    <div class="wrapper">
+      <form id="registerForm" action="">
+        <h1>Register</h1>
+        <div class="input-box">
+          <input
+            type="email"
+            id="signupEmail"
+            placeholder="Email"
+            required="true"
+          />
+          <i class="bx bxs-envelope"></i>
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            id="signupPassword"
+            placeholder="Password"
+            required="true"
+          />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <div class="input-box">
+          <input
+            type="password"
+            id="signupPasswordCheck"
+            placeholder="Password Check"
+            required="true"
+          />
+          <i class="bx bxs-lock-alt"></i>
+        </div>
+        <button type="submit" class="btn" id="signupButton">Start</button>
+        <div class="login-link">
+          <p>Already have an account? <a href="index.html">Login</a></p>
+        </div>
+      </form>
+    </div>
+    <div class="modalbackground">
+      <div id="registerModal" class="modal">
+        <div class="modal-content">
+          <img src="error.gif" alt="Error Icon" class="modal-image" />
+          <p id="errorMessage">이메일 또는 비밀번호를 확인하세요</p>
+          <button class="btn" id="closeModalButton">OK</button>
+        </div>
       </div>
     </div>
-
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-app.js";
       import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.1/firebase-analytics.js";
 
-        const firebaseConfig = {
+      const firebaseConfig = {
         apiKey: "AIzaSyDsY5JhCbU8M4n0fEgW9XP6XgtdNNgWRXU",
         authDomain: "easy-login-1bae4.firebaseapp.com",
         projectId: "easy-login-1bae4",
@@ -61,7 +72,6 @@
         measurementId: "G-L2KSZ32ZGN",
       };
 
-      // Initialize Firebase
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
 
@@ -77,24 +87,50 @@
           const signupEmail = document.getElementById("signupEmail").value;
           const signupPassword =
             document.getElementById("signupPassword").value;
-
+          const signupPasswordCheck = document.getElementById(
+            "signupPasswordCheck"
+          ).value;
           const auth = getAuth();
+
+          // 비밀번호가 서로 다른 경우 에러 메세지
+          if (signupPassword !== signupPasswordCheck) {
+            document.getElementById("errorMessage").innerHTML =
+              "Passwords do not match.<br />Please try again.";
+            document.querySelector(".modalbackground").style.display = "block";
+            document.getElementById("registerModal").style.display = "block";
+            return;
+          }
+
           createUserWithEmailAndPassword(auth, signupEmail, signupPassword)
             .then((userCredential) => {
               const user = userCredential.user;
-              window.location.href = "index.html";
+              localStorage.setItem(
+                "currentUser",
+                JSON.stringify({
+                  email: user.email,
+                  profileImage: "original.jpg",
+                  nickname: "ORI", // 초기 닉네임 설정
+                })
+              );
+              window.location.href = "indexprofile.html"; // 프로필 페이지로 이동
             })
             .catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
-              document.getElementById("modalMessage").innerText = "에러";
+              document.getElementById("errorMessage").innerText =
+                "이메일 또는 비밀번호를 확인하세요";
+              document.querySelector(".modalbackground").style.display =
+                "block";
               document.getElementById("registerModal").style.display = "block";
             });
         });
 
-      document.getElementById("closeModalButton").addEventListener("click", () => {
-        document.getElementById("registerModal").style.display = "none";
-      });
+      document
+        .getElementById("closeModalButton")
+        .addEventListener("click", () => {
+          document.querySelector(".modalbackground").style.display = "none";
+          document.getElementById("registerModal").style.display = "none";
+        });
     </script>
-</body>
+  </body>
 </html>

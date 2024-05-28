@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="styleprofile.css" />
+  </head>
+
+  <body>
+    <div class="profile-container">
+      <h1>Set Up Your Profile</h1>
+      <div class="profile-form">
+        <label for="profileImage"></label>
+        <div class="profile-image-wrapper">
+          <img
+            id="profileImagePreview"
+            src="original.jpg"
+            alt="Profile Image"
+            class="profile-image"
+          />
+          <input
+            type="file"
+            id="profileImage"
+            accept="image/*"
+            style="display: none"
+          />
+        </div>
+
+        <label for="nickname"></label>
+        <input type="text" id="nickname" placeholder="Enter your nickname" />
+
+        <button id="saveProfileButton">Save Profile</button>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const user = JSON.parse(localStorage.getItem("currentUser"));
+        if (user) {
+          document.getElementById("profileImagePreview").src =
+            user.profileImage || "original.jpg";
+          document.getElementById("nickname").value = user.nickname || "ORI";
+          document
+            .getElementById("nickname")
+            .classList.add("middle-placeholder");
+        } else {
+          // Set default profile image
+          document.getElementById("profileImagePreview").src = "original.jpg";
+        }
+      });
+
+      document
+        .getElementById("profileImagePreview")
+        .addEventListener("click", function () {
+          document.getElementById("profileImage").click();
+        });
+
+      document
+        .getElementById("profileImage")
+        .addEventListener("change", function (event) {
+          const file = event.target.files[0];
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            document.getElementById("profileImagePreview").src =
+              e.target.result;
+          };
+          reader.readAsDataURL(file);
+        });
+
+      document
+        .getElementById("saveProfileButton")
+        .addEventListener("click", function () {
+          const nickname = document.getElementById("nickname").value;
+          const profileImage = document.getElementById("profileImage").files[0];
+          const user = JSON.parse(localStorage.getItem("currentUser")) || {};
+
+          if (!nickname) {
+            alert("Please enter a nickname.");
+            return;
+          }
+
+          if (profileImage) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              user.profileImage = e.target.result;
+              saveUserProfile(user, nickname);
+            };
+            reader.readAsDataURL(profileImage);
+          } else {
+            if (!user.profileImage) {
+              user.profileImage = "original.jpg";
+            }
+            saveUserProfile(user, nickname);
+          }
+        });
+
+      function saveUserProfile(user, nickname) {
+        user.nickname = nickname;
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        alert("Profile updated successfully!");
+        window.location.href = "indexmain.html";
+      }
+    </script>
+  </body>
+</html>

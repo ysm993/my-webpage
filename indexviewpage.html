@@ -1,0 +1,72 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sheep Sleep House</title>
+    <link rel="stylesheet" href="styleviewpage.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="background-container">
+      <div class="container">
+        <button id="backButton" class="back-button">
+          <i class="bx bx-arrow-back"></i>
+        </button>
+        <button id="logoutButton" class="logout-button">
+          <i class="bx bx-door-open"></i>
+        </button>
+        <h1 id="articleTitle">Title</h1>
+        <img
+          id="articleImage"
+          src=""
+          alt="Article Image"
+          class="article-image"
+        />
+        <p id="articleAuthor" class="author-text">Author</p>
+        <p id="articleContent" class="content-text">Content</p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const articleIndex = urlParams.get("index");
+        const articles = JSON.parse(localStorage.getItem("articles")) || [];
+        const article = articles[articleIndex];
+
+        if (article) {
+          document.getElementById("articleTitle").innerText = article.title;
+          document.getElementById(
+            "articleAuthor"
+          ).innerText = `By: ${article.author}`;
+          document.getElementById("articleContent").innerText = article.content;
+          document.getElementById("articleImage").src = article.image;
+        } else {
+          document.getElementById("articleTitle").innerText =
+            "Article Not Found";
+          document.getElementById("articleAuthor").style.display = "none";
+          document.getElementById("articleContent").innerText =
+            "The article you are looking for does not exist.";
+          document.getElementById("articleImage").style.display = "none";
+        }
+
+        document
+          .getElementById("backButton")
+          .addEventListener("click", function () {
+            window.history.back();
+          });
+
+        document
+          .getElementById("logoutButton")
+          .addEventListener("click", function () {
+            window.location.href = "index.html";
+          });
+      });
+    </script>
+  </body>
+</html>
